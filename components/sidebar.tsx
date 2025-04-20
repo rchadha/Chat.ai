@@ -14,19 +14,19 @@ const routes = [
         color: "text-sky-500"
     },
     {
-        label: "Conversation",
+        label: "Conversation w/ OpenAI",
         icon: MessageSquare,
         href: '/conversation',
         color: "text-violet-500"
     },
     {
-        label: "Image Generation",
+        label: "Conversation w/ Local LLM",
         icon: ImageIcon,
         href: '/image',
         color: "text-pink-700"
     },
     {
-        label: "Video Generation",
+        label: "Conversion with Database",
         icon: VideoIcon,
         href: '/video',
         color: "text-orange-700"

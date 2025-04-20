@@ -28,12 +28,26 @@ export async function POST(
             return new NextResponse("Messages are required", {status: 400});
         }
 
-        const response = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages
+        const message = messages[0].content;
+
+        // const response = await openai.createChatCompletion({
+        //     model: "gpt-3.5-turbo",
+        //     messages
+        // });
+
+        const response = await fetch("http://127.0.0.1:3001/query", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+        },
+            body: JSON.stringify({ query: message })   
         });
 
-        return NextResponse.json(response.data.choices[0].message); 
+        const data = await response.json();
+        console.log("Data", data);
+
+        return NextResponse.json(data);
+
 
     } catch(error) {
         console.log("[CONVERSATION_ERROR]", error);

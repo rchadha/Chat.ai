@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 const tools = [
   {
-    label: "Conversation",
+    label: "Conversation w/ OpenAI",
     icon: MessageSquare,
     color: "text-violet-500",
     bgColor: "bg-violet-500/10",

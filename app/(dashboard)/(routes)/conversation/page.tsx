@@ -42,8 +42,15 @@ const Conversation = () => {
             const response = await axios.post("/api/conversation", {
                 messages: newMessages,
             });
+            console.log("RESPONSE--->", response.data);
+            
+            // Extract the response message from the backend response
+            const botMessage: ChatCompletionRequestMessage = {
+                role: "assistant",
+                content: response.data.response, // Use the 'response' field from the backend
+            };
 
-            setMessages((current) => [...current, userMessage, response.data]); 
+            setMessages((current) => [...current, userMessage, botMessage]);
             form.reset();
 
         } catch(error: any){
@@ -56,8 +63,8 @@ const Conversation = () => {
     return (
         <div>
             <Heading 
-                title="Conversation" 
-                description="Our most advanced conversational model."
+                title="RAG using OpenAI" 
+                description="RAG using OpenAI embedding & LLM"
                 icon={MessageSquare}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
