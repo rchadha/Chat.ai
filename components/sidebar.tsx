@@ -28,7 +28,7 @@ const routes = [
     {
         label: "Chat with SQL",
         icon: DatabaseIcon,
-        href: '/video',
+        href: '/sqlconversation',
         color: "text-orange-700"
     },
     {
