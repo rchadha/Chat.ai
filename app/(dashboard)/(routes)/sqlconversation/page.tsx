@@ -3,7 +3,7 @@
 import axios from "axios";
 import * as z from "zod"; 
 import Heading from "@/components/heading";
-import { MessageSquare } from "lucide-react";
+import { DatabaseBackupIcon, DatabaseIcon, MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { formSchema } from "./constants";
@@ -39,7 +39,7 @@ const Conversation = () => {
             };
             const newMessages = [...messages, userMessage];
             
-            const response = await axios.post("/api/conversation", {
+            const response = await axios.post("/api/sqlconversation", {
                 messages: newMessages,
             });
             console.log("RESPONSE--->", response.data);
@@ -47,7 +47,7 @@ const Conversation = () => {
             // Extract the response message from the backend response
             const botMessage: ChatCompletionRequestMessage = {
                 role: "assistant",
-                content: response.data.response, // Use the 'response' field from the backend
+                content: typeof response.data === 'string' ? response.data : JSON.stringify(response.data),
             };
 
             setMessages((current) => [...current, userMessage, botMessage]);
@@ -63,9 +63,9 @@ const Conversation = () => {
     return (
         <div>
             <Heading 
-                title="RAG using OpenAI" 
-                description="RAG using OpenAI embedding & LLM"
-                icon={MessageSquare}
+                title="Chat with SQL" 
+                description="Chat with SQL and get answers to your queries."
+                icon={DatabaseIcon}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
             />
@@ -83,7 +83,7 @@ const Conversation = () => {
                                         <FormControl className="m-0 p-0">
                                             <Input className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                             disabled={isLoading}
-                                            placeholder="Chat with your own data"
+                                            placeholder="Chat with SQL Database"
                                             {...field}
                                             />
                                         </FormControl>
@@ -118,9 +118,8 @@ const Conversation = () => {
                                 >
                                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}    
                                 <p className="text-sm">
-
+                                    {message.content}
                                 </p>
-                                {message.content}
                             </div>
                         ))}
 

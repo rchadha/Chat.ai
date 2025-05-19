@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ImageIcon, LayoutDashboard, MessageSquare, SettingsIcon, VideoIcon } from "lucide-react";
+import { DatabaseIcon, ImageIcon, LayoutDashboard, MessageSquare, SettingsIcon, VideoIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {  usePathname } from "next/navigation";
 
@@ -26,9 +26,9 @@ const routes = [
         color: "text-pink-700"
     },
     {
-        label: "Conversion with Database",
-        icon: VideoIcon,
-        href: '/video',
+        label: "Chat with SQL",
+        icon: DatabaseIcon,
+        href: '/sqlconversation',
         color: "text-orange-700"
     },
     {

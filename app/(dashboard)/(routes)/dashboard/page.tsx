@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 // left at 1:12:26
 import { UserButton } from "@clerk/nextjs";
-import { ArrowRight, Code, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
+import { ArrowRight, Code, DatabaseIcon, ImageIcon, MessageSquare, Music, VideoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const tools = [
@@ -15,32 +15,18 @@ const tools = [
     href: "/conversation"
   },
   {
-    label: "Image Generation",
+    label: "Conversation w/ Local LLM",
     icon: ImageIcon,
     color: "text-pink-700",
     bgColor: "bg-pink-700/10",
     href: "/image"
   },
   {
-    label: "Music Generation",
-    icon: Music,
-    color: "text-emerald-500",
-    bgColor: "bg-emerald-500/10",
-    href: "/music"
-  },
-  {
-    label: "Video Generation",
-    icon: VideoIcon,
-    color: "text-orange-700",
-    bgColor: "bg-orange-700/10",
-    href: "/video"
-  },
-  {
-    label: "Code Generation",
-    icon: Code,
+    label: "Chat with SQL",
+    icon: DatabaseIcon,
     color: "text-green-700",
     bgColor: "bg-green-700/10",
-    href: "/code"
+    href: "/sqlconversation"
   }
 
 ]
