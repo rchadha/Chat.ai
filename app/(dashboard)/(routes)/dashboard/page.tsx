@@ -22,7 +22,7 @@ const tools = [
     href: "/image"
   },
   {
-    label: "Chat with SQL",
+    label: "Chat with your Financial Data",
     icon: DatabaseIcon,
     color: "text-green-700",
     bgColor: "bg-green-700/10",

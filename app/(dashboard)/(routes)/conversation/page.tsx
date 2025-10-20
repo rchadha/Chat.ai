@@ -63,8 +63,8 @@ const Conversation = () => {
     return (
         <div>
             <Heading 
-                title="RAG using OpenAI" 
-                description="RAG using OpenAI embedding & LLM"
+                title="Chat with your data"  
+                description="Chat with your data and get answers to your queries."
                 icon={MessageSquare}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
