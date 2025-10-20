@@ -63,8 +63,8 @@ const Conversation = () => {
     return (
         <div>
             <Heading 
-                title="Chat with SQL" 
-                description="Chat with SQL and get answers to your queries."
+                title="Chat with your Financial Data" 
+                description="Chat with your Financial Data and get answers to your queries."
                 icon={DatabaseIcon}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
@@ -83,7 +83,7 @@ const Conversation = () => {
                                         <FormControl className="m-0 p-0">
                                             <Input className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                                             disabled={isLoading}
-                                            placeholder="Chat with SQL Database"
+                                            placeholder="Chat with your Financial Data"
                                             {...field}
                                             />
                                         </FormControl>

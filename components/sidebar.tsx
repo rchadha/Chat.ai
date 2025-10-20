@@ -14,19 +14,19 @@ const routes = [
         color: "text-sky-500"
     },
     {
-        label: "Conversation w/ OpenAI",
+        label: "Chat with your data",
         icon: MessageSquare,
         href: '/conversation',
         color: "text-violet-500"
     },
     {
-        label: "Conversation w/ Local LLM",
+        label: "Conversation using Local LLM",
         icon: ImageIcon,
         href: '/image',
         color: "text-pink-700"
     },
     {
-        label: "Chat with SQL",
+        label: "Chat with your Financial Data",
         icon: DatabaseIcon,
         href: '/sqlconversation',
         color: "text-orange-700"
@@ -46,11 +46,9 @@ const Sidebar = () => {
             <div className="px-3 py-2 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
                     <div className="relative w-36 h-8 mr-4">
-                        <Image 
-                            fill
-                            alt="Logo"
-                            src="/Logo-NME.png"
-                        />
+                        <span className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-pink-600 text-transparent bg-clip-text">
+                            Chat.ai
+                        </span>
                     </div>
                 </Link>
                 <div className="space-y-1">
