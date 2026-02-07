@@ -36,12 +36,13 @@ export async function POST(
         //     messages
         // });
 
-        const response = await fetch("http://127.0.0.1:3001/query", {
+        const backendUrl = process.env.BACKEND_API_URL || "http://127.0.0.1:3001";
+        const response = await fetch(`${backendUrl}/query`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
         },
-            body: JSON.stringify({ query: message })   
+            body: JSON.stringify({ query: message })
         });
 
         const data = await response.json();

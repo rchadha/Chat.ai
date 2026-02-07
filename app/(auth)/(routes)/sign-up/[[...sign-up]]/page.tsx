@@ -1,5 +1,11 @@
 import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
-  return <SignUp />;
+  return (
+    <SignUp
+      afterSignUpUrl="/dashboard"
+      afterSignInUrl="/dashboard"
+      redirectUrl="/dashboard"
+    />
+  );
 }

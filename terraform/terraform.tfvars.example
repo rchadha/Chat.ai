@@ -1,0 +1,24 @@
+# AWS Configuration
+aws_region   = "us-east-1"
+project_name = "chat-ai"
+environment  = "prod"
+
+# Lambda Configuration
+server_lambda_memory  = 1024  # MB
+server_lambda_timeout = 30    # seconds
+image_lambda_memory   = 2048  # MB
+image_lambda_timeout  = 30    # seconds
+
+# Application URL (CloudFront domain)
+app_url = "https://xxxxx.cloudfront.net"
+
+# Clerk Configuration
+clerk_publishable_key = "pk_test_xxxxx"
+clerk_secret_key      = "sk_test_xxxxx"
+
+# OpenAI Configuration
+openai_api_key = "sk-xxxxx"
+
+# Backend Services
+backend_api_url     = "http://localhost:3001"
+backend_sql_api_url = "http://localhost:3002"
