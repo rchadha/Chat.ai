@@ -37,6 +37,9 @@ next-env.d.ts
 
 # OpenNext build output
 .open-next/
+.next-lambda/
+lambda-update.zip
+lambda-image-optimization/
 
 # CDK
 cdk/
