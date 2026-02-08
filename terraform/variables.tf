@@ -82,3 +82,10 @@ variable "backend_sql_api_url" {
   type        = string
   default     = "http://localhost:3002"
 }
+
+# CI/CD
+variable "github_repo" {
+  description = "GitHub repository (owner/name) for OIDC trust policy"
+  type        = string
+  default     = "rchadha/Chat.ai"
+}
