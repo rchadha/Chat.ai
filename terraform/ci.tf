@@ -79,7 +79,10 @@ resource "aws_iam_role_policy" "github_actions_deploy" {
         Action = [
           "secretsmanager:GetSecretValue",
         ]
-        Resource = aws_secretsmanager_secret.clerk.arn
+        Resource = [
+          aws_secretsmanager_secret.clerk.arn,
+          aws_secretsmanager_secret.openai.arn,
+        ]
       },
     ]
   })
