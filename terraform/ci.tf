@@ -73,6 +73,14 @@ resource "aws_iam_role_policy" "github_actions_deploy" {
         ]
         Resource = aws_cloudfront_distribution.main.arn
       },
+      {
+        Sid    = "SecretsManagerRead"
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue",
+        ]
+        Resource = aws_secretsmanager_secret.clerk.arn
+      },
     ]
   })
 }

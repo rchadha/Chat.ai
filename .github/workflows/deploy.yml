@@ -32,19 +32,6 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build && npx open-next build
-        env:
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-          NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
-          NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
-
-      - name: Package server function
-        run: cd .open-next/server-functions/default && zip -r ../../server-function.zip .
-
       - name: Configure AWS credentials (OIDC)
         if: vars.USE_OIDC == 'true'
         uses: aws-actions/configure-aws-credentials@v4
@@ -59,6 +46,28 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
+      - name: Fetch secrets from AWS Secrets Manager
+        run: |
+          SECRET_JSON=$(aws secretsmanager get-secret-value \
+            --secret-id chat-ai/clerk \
+            --query SecretString \
+            --output text)
+          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$(echo "$SECRET_JSON" | jq -r .publishable_key)" >> "$GITHUB_ENV"
+          echo "CLERK_SECRET_KEY=$(echo "$SECRET_JSON" | jq -r .secret_key)" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build && npx open-next build
+        env:
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+          NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+
+      - name: Package server function
+        run: cd .open-next/server-functions/default && zip -r ../../server-function.zip .
 
       - name: Upload static assets to S3
         run: |
