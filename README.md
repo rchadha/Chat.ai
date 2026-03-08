@@ -156,6 +156,6 @@ terraform apply
 
 ## TODO
 
-- [ ] **Remove CDK and fix Terraform configuration** — Remove the `cdk/` directory and update Terraform to provision Lambda + CloudFront + S3 infrastructure (instead of the current ECS Fargate setup). The app is currently deployed on Lambda, so Terraform should match the actual architecture.
-- [ ] **Replace deploy.sh with GitHub Actions** — Create a GitHub Actions CI/CD pipeline to handle building, packaging, and deploying to AWS (replacing the manual `scripts/deploy.sh` workflow).
+- [x] **Remove CDK and fix Terraform configuration** — Remove the `cdk/` directory and update Terraform to provision Lambda + CloudFront + S3 infrastructure (instead of the current ECS Fargate setup). The app is currently deployed on Lambda, so Terraform should match the actual architecture.
+- [x] **Replace deploy.sh with GitHub Actions** — Create a GitHub Actions CI/CD pipeline to handle building, packaging, and deploying to AWS (replacing the manual `scripts/deploy.sh` workflow).
 
