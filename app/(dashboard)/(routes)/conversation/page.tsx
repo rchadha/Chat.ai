@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Heading from "@/components/heading";
-import { MessageSquare, ChevronDown, ChevronUp, Copy, Check } from "lucide-react";
+import { MessageSquare, ChevronDown, ChevronUp, Copy, Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
@@ -188,9 +188,18 @@ const Conversation = () => {
     const [input, setInput] = useState("");
     const [dataset, setDataset] = useState<Dataset>("sec");
     const [isLoading, setIsLoading] = useState(false);
+    const [usage, setUsage] = useState<{ used: number; limit: number } | null>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        fetch("/api/usage")
+            .then((r) => r.json())
+            .then(setUsage)
+            .catch(() => {});
+    }, []);
+
     const messages = history[dataset];
+    const isLimitReached = usage !== null && usage.used >= usage.limit;
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -214,6 +223,26 @@ const Conversation = () => {
                 body: JSON.stringify({ query, dataset }),
             });
             const data = await res.json();
+
+            if (res.status === 429) {
+                setUsage({ used: data.used, limit: data.limit });
+                window.dispatchEvent(new CustomEvent("usage-updated", { detail: { used: data.used, limit: data.limit } }));
+                setHistory((prev) => ({
+                    ...prev,
+                    [dataset]: [
+                        ...prev[dataset],
+                        {
+                            role: "assistant",
+                            content: `You've used all ${data.limit} free queries. Thanks for trying Chat.ai!`,
+                            dataset,
+                        },
+                    ],
+                }));
+                return;
+            }
+
+            setUsage({ used: data.used, limit: data.limit });
+            window.dispatchEvent(new CustomEvent("usage-updated", { detail: { used: data.used, limit: data.limit } }));
             setHistory((prev) => ({
                 ...prev,
                 [dataset]: [
@@ -248,6 +277,16 @@ const Conversation = () => {
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
             />
+            {usage && (
+                <div className="px-4 lg:px-8 pb-2 flex items-center gap-2">
+                    <Zap size={13} className={isLimitReached ? "text-red-500" : "text-violet-500"} />
+                    <span className={cn("text-xs font-medium", isLimitReached ? "text-red-500" : "text-muted-foreground")}>
+                        {isLimitReached
+                            ? "Free query limit reached"
+                            : `${usage.used}/${usage.limit} free queries used`}
+                    </span>
+                </div>
+            )}
 
             {/* Dataset tabs */}
             <div className="px-4 lg:px-8 pb-4">
@@ -353,16 +392,19 @@ const Conversation = () => {
 
             {/* Input */}
             <div className="px-4 lg:px-8 pb-6 pt-2 border-t">
-                <div className="flex items-end gap-2 rounded-xl border bg-background px-4 py-3 focus-within:shadow-sm focus-within:border-violet-400 transition-colors">
+                <div className={cn(
+                    "flex items-end gap-2 rounded-xl border bg-background px-4 py-3 focus-within:shadow-sm transition-colors",
+                    isLimitReached ? "opacity-50 cursor-not-allowed" : "focus-within:border-violet-400"
+                )}>
                     <AutoResizeTextarea
                         value={input}
                         onChange={setInput}
                         onSubmit={() => submit(input)}
-                        disabled={isLoading}
-                        placeholder={`Ask about NVIDIA ${DATASET_LABELS[dataset]}...`}
+                        disabled={isLoading || isLimitReached}
+                        placeholder={isLimitReached ? "Query limit reached" : `Ask about NVIDIA ${DATASET_LABELS[dataset]}...`}
                     />
                     <button
-                        disabled={isLoading || !input.trim()}
+                        disabled={isLoading || !input.trim() || isLimitReached}
                         onClick={() => submit(input)}
                         className={cn(
                             "shrink-0 p-1.5 rounded-lg transition-colors mb-0.5",
