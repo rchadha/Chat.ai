@@ -11,9 +11,9 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avator";
 
 const DATASETS = [
+    { label: "News", value: "news" },
     { label: "SEC Filings", value: "sec" },
     { label: "Earnings Calls", value: "earnings" },
-    { label: "News", value: "news" },
 ] as const;
 
 type Dataset = typeof DATASETS[number]["value"];
@@ -23,6 +23,27 @@ const DATASET_LABELS: Record<Dataset, string> = {
     earnings: "Earnings Calls",
     news: "News",
 };
+
+type DatasetStatus = {
+    vector_count: number;
+    last_updated: string | null;
+};
+
+type StatusData = Record<Dataset, DatasetStatus>;
+
+function formatRelativeDate(iso: string): string {
+    const date = new Date(iso);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return "Updated today";
+    if (diffDays === 1) return "Updated yesterday";
+    if (diffDays < 7) return `Updated ${diffDays} days ago`;
+    return `Updated ${date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
+}
+
+function formatInfoDate(iso: string): string {
+    return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
 
 const SUGGESTIONS: Record<Dataset, string[]> = {
     sec: [
@@ -186,15 +207,21 @@ const AutoResizeTextarea = ({
 const Conversation = () => {
     const [history, setHistory] = useState<ChatHistory>({ sec: [], earnings: [], news: [] });
     const [input, setInput] = useState("");
-    const [dataset, setDataset] = useState<Dataset>("sec");
+    const [dataset, setDataset] = useState<Dataset>("news");
     const [isLoading, setIsLoading] = useState(false);
     const [usage, setUsage] = useState<{ used: number; limit: number } | null>(null);
+    const [status, setStatus] = useState<StatusData | null>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         fetch("/api/usage")
             .then((r) => r.json())
             .then(setUsage)
+            .catch(() => {});
+
+        fetch("/api/status")
+            .then((r) => r.json())
+            .then(setStatus)
             .catch(() => {});
     }, []);
 
@@ -289,23 +316,48 @@ const Conversation = () => {
             )}
 
             {/* Dataset tabs */}
-            <div className="px-4 lg:px-8 pb-4">
+            <div className="px-4 lg:px-8 pb-2">
                 <div className="flex gap-1 p-1 bg-muted rounded-lg w-fit">
-                    {DATASETS.map((d) => (
-                        <button
-                            key={d.value}
-                            onClick={() => setDataset(d.value)}
-                            className={cn(
-                                "px-4 py-1.5 rounded-md text-sm font-medium transition-all",
-                                dataset === d.value
-                                    ? "bg-white text-foreground shadow-sm"
-                                    : "text-muted-foreground hover:text-foreground"
-                            )}
-                        >
-                            {d.label}
-                        </button>
-                    ))}
+                    {DATASETS.map((d) => {
+                        const s = status?.[d.value];
+                        const badge = s?.last_updated
+                            ? formatRelativeDate(s.last_updated)
+                            : s ? "Historical" : null;
+                        return (
+                            <button
+                                key={d.value}
+                                onClick={() => setDataset(d.value)}
+                                className={cn(
+                                    "flex flex-col items-start px-4 py-1.5 rounded-md text-sm font-medium transition-all",
+                                    dataset === d.value
+                                        ? "bg-white text-foreground shadow-sm"
+                                        : "text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                <span>{d.label}</span>
+                                {badge && (
+                                    <span className={cn(
+                                        "text-[10px] font-normal leading-tight",
+                                        dataset === d.value ? "text-violet-500" : "text-muted-foreground"
+                                    )}>
+                                        {badge}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
                 </div>
+
+                {/* Info bar */}
+                {status?.[dataset] && (
+                    <p className="text-xs text-muted-foreground mt-2 pl-1">
+                        {status[dataset].vector_count.toLocaleString()} {dataset === "news" ? "articles" : "chunks"}
+                        {" · "}
+                        {status[dataset].last_updated
+                            ? `Last updated ${formatInfoDate(status[dataset].last_updated!)}`
+                            : "Historical data"}
+                    </p>
+                )}
             </div>
 
             {/* Messages */}
