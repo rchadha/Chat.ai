@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { userUsage } from "@/lib/schema";
 import { eq } from "drizzle-orm";
-import { QUERY_LIMIT } from "../conversation/route";
+import { QUERY_LIMIT } from "@/lib/constants";
 
 export async function GET() {
     const { userId } = await auth();

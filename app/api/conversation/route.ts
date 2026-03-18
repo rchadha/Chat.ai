@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { userUsage, queryLog } from "@/lib/schema";
 import { eq } from "drizzle-orm";
-
-export const QUERY_LIMIT = 50;
+import { QUERY_LIMIT } from "@/lib/constants";
 
 export async function POST(req: Request) {
     try {
