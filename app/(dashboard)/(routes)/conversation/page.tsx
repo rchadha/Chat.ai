@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Heading from "@/components/heading";
-import { MessageSquare, ChevronDown, ChevronUp, Copy, Check, Zap } from "lucide-react";
+import { MessageSquare, ChevronDown, ChevronUp, Copy, Check, Zap, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
@@ -12,6 +12,7 @@ import { BotAvatar } from "@/components/bot-avator";
 
 const DATASETS = [
     { label: "News", value: "news" },
+    { label: "Social Sentiment", value: "social" },
     { label: "SEC Filings", value: "sec" },
     { label: "Earnings Calls", value: "earnings" },
 ] as const;
@@ -19,9 +20,10 @@ const DATASETS = [
 type Dataset = typeof DATASETS[number]["value"];
 
 const DATASET_LABELS: Record<Dataset, string> = {
+    news: "News",
+    social: "Social Sentiment",
     sec: "SEC Filings",
     earnings: "Earnings Calls",
-    news: "News",
 };
 
 type DatasetStatus = {
@@ -46,6 +48,18 @@ function formatInfoDate(iso: string): string {
 }
 
 const SUGGESTIONS: Record<Dataset, string[]> = {
+    news: [
+        "What is the latest news about NVIDIA's chip sales in China?",
+        "What are analysts saying about NVIDIA's stock price target?",
+        "What is the latest news about NVIDIA Blackwell GPU production?",
+    ],
+    social: [
+        "What is the current sentiment around NVIDIA on Reddit?",
+        "What are retail investors saying about NVDA's recent performance?",
+        "Are investors on Reddit bullish or bearish on NVIDIA right now?",
+        "What concerns are Reddit users raising about NVIDIA's stock?",
+        "What are the most discussed NVIDIA topics on investing forums this week?",
+    ],
     sec: [
         "What risk factors did NVIDIA highlight in their latest 10-K?",
         "What did NVIDIA say about supply and capacity constraints?",
@@ -56,11 +70,6 @@ const SUGGESTIONS: Record<Dataset, string[]> = {
         "What guidance did NVIDIA management provide for the next quarter?",
         "What did Jensen Huang say about AI infrastructure demand?",
     ],
-    news: [
-        "What is the latest news about NVIDIA's chip sales in China?",
-        "What are analysts saying about NVIDIA's stock price target?",
-        "What is the latest news about NVIDIA Blackwell GPU production?",
-    ],
 };
 
 type RetrievalSource = {
@@ -69,14 +78,34 @@ type RetrievalSource = {
     rerank_score: number | null;
 };
 
+type SentimentLabel = "positive" | "neutral" | "negative";
+
 type Message = {
     role: "user" | "assistant";
     content: string;
     dataset?: Dataset;
     retrieval?: RetrievalSource[];
+    sentiment_label?: SentimentLabel;
 };
 
 type ChatHistory = Record<Dataset, Message[]>;
+
+// ── Sentiment badge ────────────────────────────────────────────────────────────
+
+const SENTIMENT_CONFIG: Record<SentimentLabel, { label: string; className: string }> = {
+    positive: { label: "Positive", className: "bg-green-100 text-green-700" },
+    neutral:  { label: "Neutral",  className: "bg-gray-100 text-gray-600"  },
+    negative: { label: "Negative", className: "bg-red-100 text-red-600"    },
+};
+
+const SentimentBadge = ({ sentiment }: { sentiment: SentimentLabel }) => {
+    const cfg = SENTIMENT_CONFIG[sentiment];
+    return (
+        <span className={cn("text-[11px] font-medium px-2 py-0.5 rounded-full", cfg.className)}>
+            {cfg.label}
+        </span>
+    );
+};
 
 // ── Sources panel ──────────────────────────────────────────────────────────────
 
@@ -205,7 +234,7 @@ const AutoResizeTextarea = ({
 // ── Main component ─────────────────────────────────────────────────────────────
 
 const Conversation = () => {
-    const [history, setHistory] = useState<ChatHistory>({ sec: [], earnings: [], news: [] });
+    const [history, setHistory] = useState<ChatHistory>({ news: [], social: [], sec: [], earnings: [] });
     const [input, setInput] = useState("");
     const [dataset, setDataset] = useState<Dataset>("news");
     const [isLoading, setIsLoading] = useState(false);
@@ -279,6 +308,7 @@ const Conversation = () => {
                         content: data.response,
                         dataset,
                         retrieval: data.retrieval,
+                        sentiment_label: data.sentiment_label ?? undefined,
                     },
                 ],
             }));
@@ -299,7 +329,7 @@ const Conversation = () => {
         <div className="h-full flex flex-col">
             <Heading
                 title="Chat with your data"
-                description="Chat with NVIDIA financial data across SEC filings, earnings calls, and news."
+                description="Chat with NVIDIA financial data across news, social sentiment, SEC filings, and earnings calls."
                 icon={MessageSquare}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
@@ -349,13 +379,27 @@ const Conversation = () => {
                 </div>
 
                 {/* Info bar */}
-                {status?.[dataset] && (
-                    <p className="text-xs text-muted-foreground mt-2 pl-1">
-                        {status[dataset].vector_count.toLocaleString()} {dataset === "news" ? "articles" : "chunks"}
-                        {" · "}
-                        {status[dataset].last_updated
-                            ? `Last updated ${formatInfoDate(status[dataset].last_updated!)}`
-                            : "Historical data"}
+                {(status?.[dataset] || dataset === "social") && (
+                    <p className="text-xs text-muted-foreground mt-2 pl-1 flex items-center gap-1">
+                        {dataset === "social" ? (
+                            <>
+                                <Users size={11} />
+                                <span>
+                                    {status?.social
+                                        ? `${status.social.vector_count.toLocaleString()} posts · `
+                                        : ""}
+                                    Data sourced from Reddit finance communities (r/investing, r/stocks, r/wallstreetbets). Updated daily.
+                                </span>
+                            </>
+                        ) : status?.[dataset] ? (
+                            <>
+                                {status[dataset].vector_count.toLocaleString()} {dataset === "news" ? "articles" : "chunks"}
+                                {" · "}
+                                {status[dataset].last_updated
+                                    ? `Last updated ${formatInfoDate(status[dataset].last_updated!)}`
+                                    : "Historical data"}
+                            </>
+                        ) : null}
                     </p>
                 )}
             </div>
@@ -413,12 +457,15 @@ const Conversation = () => {
                                 )}
                             </div>
 
-                            {/* Dataset badge + copy button for assistant messages */}
+                            {/* Dataset badge + sentiment + copy button for assistant messages */}
                             {msg.role === "assistant" && (
                                 <div className="flex items-center gap-2 mt-1.5 px-1">
                                     <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600">
                                         {DATASET_LABELS[msg.dataset ?? dataset]}
                                     </span>
+                                    {msg.sentiment_label && (
+                                        <SentimentBadge sentiment={msg.sentiment_label} />
+                                    )}
                                     <CopyButton text={msg.content} />
                                 </div>
                             )}
