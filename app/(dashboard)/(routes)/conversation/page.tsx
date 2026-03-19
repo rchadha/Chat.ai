@@ -4,17 +4,17 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Heading from "@/components/heading";
-import { MessageSquare, ChevronDown, ChevronUp, Copy, Check, Zap, Users } from "lucide-react";
+import { MessageSquare, ChevronDown, ChevronUp, Copy, Check, Zap, Users, Newspaper, TrendingUp, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avator";
 
 const DATASETS = [
-    { label: "News", value: "news" },
-    { label: "Social Sentiment", value: "social" },
-    { label: "SEC Filings", value: "sec" },
-    { label: "Earnings Calls", value: "earnings" },
+    { label: "News", value: "news", icon: Newspaper },
+    { label: "Social Sentiment", value: "social", icon: Users },
+    { label: "SEC Filings", value: "sec", icon: FileText },
+    { label: "Earnings Calls", value: "earnings", icon: TrendingUp },
 ] as const;
 
 type Dataset = typeof DATASETS[number]["value"];
@@ -358,16 +358,19 @@ const Conversation = () => {
                                 key={d.value}
                                 onClick={() => setDataset(d.value)}
                                 className={cn(
-                                    "flex flex-col items-start px-4 py-1.5 rounded-md text-sm font-medium transition-all",
+                                    "flex flex-col items-start px-3 py-2 rounded-md text-sm font-medium transition-all",
                                     dataset === d.value
                                         ? "bg-white text-foreground shadow-sm"
                                         : "text-muted-foreground hover:text-foreground"
                                 )}
                             >
-                                <span>{d.label}</span>
+                                <div className="flex items-center gap-1.5">
+                                    <d.icon size={13} className={dataset === d.value ? "text-violet-500" : ""} />
+                                    <span>{d.label}</span>
+                                </div>
                                 {badge && (
                                     <span className={cn(
-                                        "text-[10px] font-normal leading-tight",
+                                        "text-[10px] font-normal leading-tight pl-5",
                                         dataset === d.value ? "text-violet-500" : "text-muted-foreground"
                                     )}>
                                         {badge}
