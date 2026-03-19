@@ -37,11 +37,21 @@ export async function POST(req: Request) {
 
         // Call backend
         const backendUrl = process.env.BACKEND_RAG_API_URL || "http://127.0.0.1:3001";
+        console.log("[CONVERSATION] calling backend:", `${backendUrl}/query`, { dataset });
+
         const response = await fetch(`${backendUrl}/query`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ query, dataset: dataset || "sec" }),
         });
+
+        console.log("[CONVERSATION] backend status:", response.status, response.headers.get("content-type"));
+
+        if (!response.ok) {
+            const text = await response.text();
+            console.log("[CONVERSATION] backend error body:", text.slice(0, 500));
+            return new NextResponse("Backend error", { status: 502 });
+        }
 
         const data = await response.json();
 
