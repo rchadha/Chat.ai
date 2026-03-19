@@ -19,7 +19,7 @@ export const LandingNavbar = () => {
             <Link href="/" className="flex items-center">
                 <div className="relative h-8 w-36 mr-4">
                    <span className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-pink-600 text-transparent bg-clip-text">
-                        Chat.ai
+                        Lumin.ai
                     </span>
                 </div>
             </Link>
