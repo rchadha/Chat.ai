@@ -49,26 +49,26 @@ function formatInfoDate(iso: string): string {
 
 const SUGGESTIONS: Record<Dataset, string[]> = {
     news: [
-        "What is the latest news about NVIDIA's chip sales in China?",
-        "What are analysts saying about NVIDIA's stock price target?",
-        "What is the latest news about NVIDIA Blackwell GPU production?",
+        "What is the latest news about this company's business outlook?",
+        "What are analysts saying about the stock price target?",
+        "What recent developments have impacted the company's valuation?",
     ],
     social: [
-        "What is the current sentiment around NVIDIA on Reddit?",
-        "What are retail investors saying about NVDA's recent performance?",
-        "Are investors on Reddit bullish or bearish on NVIDIA right now?",
-        "What concerns are Reddit users raising about NVIDIA's stock?",
-        "What are the most discussed NVIDIA topics on investing forums this week?",
+        "What is the current sentiment around this stock on Reddit?",
+        "What are retail investors saying about recent performance?",
+        "Are investors on Reddit bullish or bearish right now?",
+        "What concerns are Reddit users raising about this stock?",
+        "What are the most discussed topics on investing forums this week?",
     ],
     sec: [
-        "What risk factors did NVIDIA highlight in their latest 10-K?",
-        "What did NVIDIA say about supply and capacity constraints?",
-        "How did NVIDIA describe their data center business strategy?",
+        "What risk factors were highlighted in the latest 10-K?",
+        "What did the company say about supply and capacity constraints?",
+        "How did the company describe their core business strategy?",
     ],
     earnings: [
-        "What were NVIDIA's key revenue highlights from the latest earnings call?",
-        "What guidance did NVIDIA management provide for the next quarter?",
-        "What did Jensen Huang say about AI infrastructure demand?",
+        "What were the key revenue highlights from the latest earnings call?",
+        "What guidance did management provide for the next quarter?",
+        "What did the CEO say about demand and growth outlook?",
     ],
 };
 
@@ -289,7 +289,7 @@ const Conversation = () => {
                         ...prev[dataset],
                         {
                             role: "assistant",
-                            content: `You've used all ${data.limit} free queries. Thanks for trying Chat.ai!`,
+                            content: `You've used all ${data.limit} free queries. Thanks for trying Lumin.ai!`,
                             dataset,
                         },
                     ],
@@ -328,8 +328,8 @@ const Conversation = () => {
     return (
         <div className="h-full flex flex-col">
             <Heading
-                title="Chat with your data"
-                description="Chat with NVIDIA financial data across news, social sentiment, SEC filings, and earnings calls."
+                title="FinChat"
+                description="Ask questions across news, social sentiment, SEC filings, and earnings calls for any public company."
                 icon={MessageSquare}
                 iconColor="text-violet-500"
                 bgColor="bg-violet-500/10"
@@ -411,7 +411,7 @@ const Conversation = () => {
                         <div className="text-center">
                             <MessageSquare className="mx-auto h-10 w-10 text-muted-foreground/30 mb-3" />
                             <p className="text-muted-foreground text-sm">
-                                Ask a question about NVIDIA {DATASET_LABELS[dataset]}
+                                Ask a question about {DATASET_LABELS[dataset]}
                             </p>
                         </div>
                         <div className="grid gap-3 w-full max-w-lg">
@@ -500,7 +500,7 @@ const Conversation = () => {
                         onChange={setInput}
                         onSubmit={() => submit(input)}
                         disabled={isLoading || isLimitReached}
-                        placeholder={isLimitReached ? "Query limit reached" : `Ask about NVIDIA ${DATASET_LABELS[dataset]}...`}
+                        placeholder={isLimitReached ? "Query limit reached" : `Ask about ${DATASET_LABELS[dataset]}...`}
                     />
                     <button
                         disabled={isLoading || !input.trim() || isLimitReached}

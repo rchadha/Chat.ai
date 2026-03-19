@@ -14,7 +14,7 @@ const routes = [
         color: "text-sky-500"
     },
     {
-        label: "Chat with your data",
+        label: "FinChat",
         icon: MessageSquare,
         href: '/conversation',
         color: "text-violet-500"
@@ -100,7 +100,7 @@ const Sidebar = () => {
             <div className="px-3 py-4 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-14">
                     <span className="text-3xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-pink-600 text-transparent bg-clip-text">
-                        Chat.ai
+                        Lumin.ai
                     </span>
                 </Link>
                 <div className="space-y-1">
