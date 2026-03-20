@@ -250,7 +250,13 @@ const AutoResizeTextarea = ({
 const Conversation = () => {
     const [history, setHistory] = useState<ChatHistory>({ news: [], social: [], sec: [], earnings: [] });
     const [input, setInput] = useState("");
-    const [dataset, setDataset] = useState<Dataset>("news");
+    const [dataset, setDataset] = useState<Dataset>(() => {
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("finchat_default_dataset") as Dataset | null;
+            if (saved && ["news", "social", "sec", "earnings"].includes(saved)) return saved;
+        }
+        return "news";
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [usage, setUsage] = useState<{ used: number; limit: number } | null>(null);
     const [status, setStatus] = useState<StatusData | null>(null);

@@ -1,3 +1,27 @@
+# Lumin.ai
+
+AI-powered research platform for finance, data, and legal workflows.
+
+## Products
+
+| Product | Status | Description |
+|---|---|---|
+| **FinChat** | ✅ Live | Financial intelligence — SEC filings, earnings calls, news, social sentiment |
+| **DataChat** | 🔜 Coming Soon | Natural language interface to SQL databases |
+| **LocalChat** | 🔜 Coming Soon | Chat with a locally running LLM — fully private |
+| **LexAI** | 🔜 Coming Soon | AI assistant for legal research and document workflows |
+
+## Settings — Planned Features
+
+- [ ] **Notifications** — Email alerts when new data is ingested (news/social updated daily)
+- [ ] **Query History** — View past queries with timestamps and dataset (data already stored in `query_log` table)
+- [ ] **Manage Access** — Invite beta users, view who has access, revoke access
+- [ ] **Billing & Plan** — Free tier vs paid plan, upgrade CTA, monthly query reset
+- [ ] **API Key** — Expose a public API for power users with key management
+- [ ] **Data Sources** — Toggle which datasets are active, add custom tickers/companies to track
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
