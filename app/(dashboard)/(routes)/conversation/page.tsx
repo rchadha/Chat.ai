@@ -27,8 +27,8 @@ const DATASET_LABELS: Record<Dataset, string> = {
 };
 
 type DatasetStatus = {
-    vector_count: number;
-    last_updated: string | null;
+    count: number;
+    latest: string | null;
 };
 
 type StatusData = Record<Dataset, DatasetStatus>;
@@ -45,6 +45,13 @@ function formatRelativeDate(iso: string): string {
 
 function formatInfoDate(iso: string): string {
     return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function formatInfoDateTime(iso: string): string {
+    return new Date(iso).toLocaleString("en-US", {
+        month: "short", day: "numeric", year: "numeric",
+        hour: "numeric", minute: "2-digit", hour12: true,
+    });
 }
 
 const SUGGESTIONS: Record<Dataset, string[]> = {
@@ -362,8 +369,8 @@ const Conversation = () => {
                 <div className="flex gap-1 p-1 bg-muted rounded-lg w-fit">
                     {DATASETS.map((d) => {
                         const s = status?.[d.value];
-                        const badge = s?.last_updated
-                            ? formatRelativeDate(s.last_updated)
+                        const badge = s?.latest
+                            ? formatRelativeDate(s.latest)
                             : s ? "Historical" : null;
                         return (
                             <button
@@ -400,18 +407,19 @@ const Conversation = () => {
                             <>
                                 <Users size={11} />
                                 <span>
-                                    {status?.social
-                                        ? `${status.social.vector_count.toLocaleString()} posts · `
+                                    {status?.social ? `${status.social.count.toLocaleString()} posts · ` : ""}
+                                    {status?.social?.latest
+                                        ? `Last updated ${formatInfoDateTime(status.social.latest)} · `
                                         : ""}
-                                    Data sourced from Reddit finance communities (r/investing, r/stocks, r/wallstreetbets). Updated daily.
+                                    Data sourced from Reddit finance communities (r/investing, r/stocks, r/wallstreetbets).
                                 </span>
                             </>
                         ) : status?.[dataset] ? (
                             <>
-                                {status[dataset].vector_count.toLocaleString()} {dataset === "news" ? "articles" : "chunks"}
+                                {status[dataset].count.toLocaleString()} {dataset === "news" ? "articles" : "chunks"}
                                 {" · "}
-                                {status[dataset].last_updated
-                                    ? `Last updated ${formatInfoDate(status[dataset].last_updated!)}`
+                                {status[dataset].latest
+                                    ? `Last updated ${dataset === "news" ? formatInfoDateTime(status[dataset].latest!) : formatInfoDate(status[dataset].latest!)}`
                                     : "Historical data"}
                             </>
                         ) : null}
