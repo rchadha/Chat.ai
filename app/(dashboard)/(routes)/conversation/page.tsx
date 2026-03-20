@@ -129,7 +129,12 @@ const SourcesPanel = ({ retrieval }: { retrieval: RetrievalSource[] }) => {
                                 className="truncate text-muted-foreground max-w-[220px]"
                                 title={r.source}
                             >
-                                {r.source.split("/").slice(-2).join("/")}
+                                {r.source
+                                    .split("/")
+                                    .filter(Boolean)
+                                    .map(s => s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()))
+                                    .slice(-2)
+                                    .join(" · ")}
                             </span>
                             <div className="flex items-center gap-1.5 ml-auto shrink-0">
                                 <div className="w-16 h-1.5 bg-muted-foreground/20 rounded-full overflow-hidden">
@@ -241,6 +246,7 @@ const Conversation = () => {
     const [usage, setUsage] = useState<{ used: number; limit: number } | null>(null);
     const [status, setStatus] = useState<StatusData | null>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
+    const messagesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         fetch("/api/usage")
@@ -257,9 +263,15 @@ const Conversation = () => {
     const messages = history[dataset];
     const isLimitReached = usage !== null && usage.used >= usage.limit;
 
+    // Scroll to bottom when new messages arrive
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [history, isLoading, dataset]);
+    }, [history, isLoading]);
+
+    // Scroll to top when switching datasets
+    useEffect(() => {
+        messagesRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    }, [dataset]);
 
     const submit = useCallback(async (query: string) => {
         if (!query.trim() || isLoading) return;
@@ -408,11 +420,14 @@ const Conversation = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 lg:px-8 space-y-6 pb-4">
+            <div ref={messagesRef} className="flex-1 overflow-y-auto px-4 lg:px-8 space-y-6 pb-4">
                 {messages.length === 0 && !isLoading && (
                     <div className="flex flex-col items-center justify-center h-full gap-6 py-16">
                         <div className="text-center">
-                            <MessageSquare className="mx-auto h-10 w-10 text-muted-foreground/30 mb-3" />
+                            {(() => {
+                                const Icon = DATASETS.find(d => d.value === dataset)?.icon ?? MessageSquare;
+                                return <Icon className="mx-auto h-10 w-10 text-muted-foreground/30 mb-3" />;
+                            })()}
                             <p className="text-muted-foreground text-sm">
                                 Ask a question about {DATASET_LABELS[dataset]}
                             </p>
