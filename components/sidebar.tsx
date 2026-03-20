@@ -132,10 +132,10 @@ const Sidebar = () => {
                         route.comingSoon ? (
                             <div
                                 key={route.href}
-                                className="text-sm flex p-3 w-full justify-start font-medium rounded-lg opacity-50 cursor-not-allowed"
+                                className="text-sm flex p-3 w-full justify-start font-medium rounded-lg opacity-60 cursor-not-allowed"
                             >
-                                <div className="flex items-center flex-1 text-zinc-500">
-                                    <route.icon className={cn("h-5 w-5 mr-3", route.color, "opacity-50")} />
+                                <div className="flex items-center flex-1 text-zinc-400">
+                                    <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
                                     {route.label}
                                 </div>
                                 <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-400">
