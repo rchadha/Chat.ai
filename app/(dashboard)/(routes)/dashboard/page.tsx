@@ -12,7 +12,8 @@ const tools = [
         icon: BarChart2,
         color: "text-violet-500",
         bgColor: "bg-violet-500/10",
-        href: "/conversation"
+        href: "/conversation",
+        comingSoon: false,
     },
     {
         label: "DataChat",
@@ -20,7 +21,8 @@ const tools = [
         icon: DatabaseIcon,
         color: "text-orange-500",
         bgColor: "bg-orange-500/10",
-        href: "/sqlconversation"
+        href: "/sqlconversation",
+        comingSoon: true,
     },
     {
         label: "LocalChat",
@@ -28,7 +30,8 @@ const tools = [
         icon: BrainCircuit,
         color: "text-pink-500",
         bgColor: "bg-pink-500/10",
-        href: "/image"
+        href: "/image",
+        comingSoon: true,
     },
 ]
 
@@ -49,19 +52,33 @@ const DashboardPage = () => {
                 {tools.map((tool) => (
                     <Card
                         key={tool.href}
-                        onClick={() => router.push(tool.href)}
-                        className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer group"
+                        onClick={() => !tool.comingSoon && router.push(tool.href)}
+                        className={cn(
+                            "p-4 border-black/5 flex items-center justify-between transition",
+                            tool.comingSoon
+                                ? "opacity-60 cursor-not-allowed"
+                                : "hover:shadow-md cursor-pointer group"
+                        )}
                     >
                         <div className="flex items-center gap-x-4">
-                            <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
+                            <div className={cn("p-2 w-fit rounded-md", tool.bgColor, tool.comingSoon && "opacity-50")}>
                                 <tool.icon className={cn("w-8 h-8", tool.color)} />
                             </div>
                             <div>
-                                <div className="font-semibold">{tool.label}</div>
+                                <div className="flex items-center gap-2">
+                                    <span className="font-semibold">{tool.label}</span>
+                                    {tool.comingSoon && (
+                                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                                            Coming Soon
+                                        </span>
+                                    )}
+                                </div>
                                 <div className="text-sm text-muted-foreground">{tool.description}</div>
                             </div>
                         </div>
-                        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                        {!tool.comingSoon && (
+                            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                        )}
                     </Card>
                 ))}
             </div>
