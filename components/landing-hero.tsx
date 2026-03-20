@@ -18,7 +18,7 @@ export const LandingHero = () => {
                                 "FinChat",
                                 "DataChat",
                                 "LexAI",
-                                "Lumin.ai",
+                                "lumin.ai",
                             ],
                             autoStart: true,
                             loop: true,

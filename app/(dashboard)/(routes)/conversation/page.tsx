@@ -316,7 +316,7 @@ const Conversation = () => {
                         ...prev[dataset],
                         {
                             role: "assistant",
-                            content: `You've used all ${data.limit} free queries. Thanks for trying Lumin.ai!`,
+                            content: `You've used all ${data.limit} free queries. Thanks for trying lumin.ai!`,
                             dataset,
                         },
                     ],

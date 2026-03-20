@@ -122,7 +122,7 @@ const Sidebar = () => {
             <div className="px-3 py-4 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-10">
                     <span className="text-3xl font-bold bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400 text-transparent bg-clip-text">
-                        Lumin.ai
+                        lumin.ai
                     </span>
                 </Link>
 

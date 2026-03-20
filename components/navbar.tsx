@@ -8,7 +8,7 @@ const Navbar = () => {
             <MobileSidebar />
             <Link href="/dashboard" className="md:hidden ml-2">
                 <span className="text-xl font-bold bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400 text-transparent bg-clip-text">
-                    Lumin.ai
+                    lumin.ai
                 </span>
             </Link>
             <div className="flex w-full justify-end">
