@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { BarChart2, BrainCircuit, DatabaseIcon, LayoutDashboard, MessageSquare, SettingsIcon, Zap } from "lucide-react";
+import { BarChart2, BrainCircuit, DatabaseIcon, LayoutDashboard, MessageSquare, Scale, SettingsIcon, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -33,6 +33,13 @@ const routes = [
         icon: BrainCircuit,
         href: '/image',
         color: "text-pink-500",
+        comingSoon: true,
+    },
+    {
+        label: "LexAI",
+        icon: Scale,
+        href: '/lexai',
+        color: "text-emerald-500",
         comingSoon: true,
     },
     {
