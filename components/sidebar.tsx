@@ -11,30 +11,35 @@ const routes = [
         label: "Dashboard",
         icon: LayoutDashboard,
         href: '/dashboard',
-        color: "text-sky-500"
+        color: "text-sky-500",
+        comingSoon: false,
     },
     {
         label: "FinChat",
         icon: BarChart2,
         href: '/conversation',
-        color: "text-violet-500"
+        color: "text-violet-500",
+        comingSoon: false,
     },
     {
         label: "DataChat",
         icon: DatabaseIcon,
         href: '/sqlconversation',
-        color: "text-orange-500"
+        color: "text-orange-500",
+        comingSoon: true,
     },
     {
         label: "LocalChat",
         icon: BrainCircuit,
         href: '/image',
-        color: "text-pink-500"
+        color: "text-pink-500",
+        comingSoon: true,
     },
     {
         label: "Settings",
         icon: SettingsIcon,
         href: '/settings',
+        comingSoon: false,
     }
 ]
 
@@ -117,19 +122,34 @@ const Sidebar = () => {
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500 pl-3 mb-2">Products</p>
                 <div className="space-y-1 mb-6">
                     {mainRoutes.map((route) => (
-                        <Link
-                            href={route.href}
-                            key={route.href}
-                            className={cn(
-                                "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
-                                pathname === route.href ? "text-white bg-white/10" : "text-zinc-400"
-                            )}
-                        >
-                            <div className="flex items-center flex-1">
-                                <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
-                                {route.label}
+                        route.comingSoon ? (
+                            <div
+                                key={route.href}
+                                className="text-sm flex p-3 w-full justify-start font-medium rounded-lg opacity-50 cursor-not-allowed"
+                            >
+                                <div className="flex items-center flex-1 text-zinc-500">
+                                    <route.icon className={cn("h-5 w-5 mr-3", route.color, "opacity-50")} />
+                                    {route.label}
+                                </div>
+                                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-700 text-zinc-400">
+                                    Soon
+                                </span>
                             </div>
-                        </Link>
+                        ) : (
+                            <Link
+                                href={route.href}
+                                key={route.href}
+                                className={cn(
+                                    "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition",
+                                    pathname === route.href ? "text-white bg-white/10" : "text-zinc-400"
+                                )}
+                            >
+                                <div className="flex items-center flex-1">
+                                    <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
+                                    {route.label}
+                                </div>
+                            </Link>
+                        )
                     ))}
                 </div>
 
