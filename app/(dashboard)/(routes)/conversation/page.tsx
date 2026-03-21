@@ -439,7 +439,7 @@ const Conversation = () => {
                     <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600">
                         NVDA
                     </span>
-                    <span className="text-[11px] text-muted-foreground">· Top S&amp;P 500 companies coming soon</span>
+                    <span className="text-[11px] text-muted-foreground">· more companies coming soon</span>
                 </div>
             </div>
 
