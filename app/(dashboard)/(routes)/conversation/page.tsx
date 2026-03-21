@@ -83,6 +83,7 @@ const SUGGESTIONS: Record<Dataset, string[]> = {
 
 type RetrievalSource = {
     source: string;
+    snippet: string;
     vector_score: number;
     rerank_score: number | null;
 };
@@ -130,36 +131,30 @@ const SourcesPanel = ({ retrieval }: { retrieval: RetrievalSource[] }) => {
                 {open ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
                 <span>{retrieval.length} source{retrieval.length !== 1 ? "s" : ""}</span>
             </button>
-            {open && (
-                <div className="mt-2 space-y-2 pl-1">
-                    {retrieval.map((r, i) => (
-                        <div key={i} className="flex items-center gap-3">
-                            <span
-                                className="truncate text-muted-foreground max-w-[220px]"
-                                title={r.source}
-                            >
-                                {r.source
-                                    .split("/")
-                                    .filter(Boolean)
-                                    .map(s => s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()))
-                                    .slice(-2)
-                                    .join(" · ")}
-                            </span>
-                            <div className="flex items-center gap-1.5 ml-auto shrink-0">
-                                <div className="w-16 h-1.5 bg-muted-foreground/20 rounded-full overflow-hidden">
-                                    <div
-                                        className="h-full bg-violet-500 rounded-full"
-                                        style={{ width: `${Math.round(r.vector_score * 100)}%` }}
-                                    />
+            <div className={cn(
+                "overflow-hidden transition-all duration-200 ease-in-out",
+                open ? "max-h-[600px] opacity-100 mt-2" : "max-h-0 opacity-0"
+            )}>
+                <div className="space-y-2">
+                    {retrieval.map((r, i) => {
+                        const filename = r.source.split("/").pop() ?? r.source;
+                        const score = r.rerank_score !== null ? r.rerank_score : r.vector_score;
+                        return (
+                            <div key={i} className="rounded-lg border border-border bg-background px-3 py-2.5 space-y-1">
+                                <div className="flex items-start justify-between gap-2">
+                                    <span className="font-medium text-foreground break-all leading-snug">{filename}</span>
+                                    <span className="shrink-0 tabular-nums text-muted-foreground">{score.toFixed(2)}</span>
                                 </div>
-                                <span className="text-muted-foreground tabular-nums w-8 text-right">
-                                    {Math.round(r.vector_score * 100)}%
-                                </span>
+                                {r.snippet && (
+                                    <p className="text-muted-foreground line-clamp-2 leading-relaxed">
+                                        &ldquo;{r.snippet}&rdquo;
+                                    </p>
+                                )}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
-            )}
+            </div>
         </div>
     );
 };

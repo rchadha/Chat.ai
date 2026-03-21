@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         const response = await fetch(`${backendUrl}/query`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query, dataset: dataset || "sec" }),
+            body: JSON.stringify({ query, dataset: dataset || "sec", use_reranker: false }),
         });
 
         console.log("[CONVERSATION] backend status:", response.status, response.headers.get("content-type"));
