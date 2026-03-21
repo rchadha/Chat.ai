@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className="flex items-center p-4">
             <MobileSidebar />
             <Link href="/dashboard" className="md:hidden ml-2">
-                <span className="text-xl font-bold bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400 text-transparent bg-clip-text">
+                <span className="text-xl font-bold bg-gradient-to-r from-violet-500 to-pink-500 text-transparent bg-clip-text">
                     lumin.ai
                 </span>
             </Link>
