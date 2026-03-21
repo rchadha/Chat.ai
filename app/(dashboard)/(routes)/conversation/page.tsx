@@ -81,7 +81,7 @@ const SUGGESTIONS: Record<Dataset, string[]> = {
     earnings: [
         "What were the key revenue highlights from the latest earnings call?",
         "What guidance did management provide for the next quarter?",
-        "What did the CEO say about demand and growth outlook?",
+        "What did NVIDIA's CEO say about demand and growth outlook?",
     ],
 };
 
