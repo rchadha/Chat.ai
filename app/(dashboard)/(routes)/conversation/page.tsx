@@ -34,13 +34,17 @@ type DatasetStatus = {
 type StatusData = Record<Dataset, DatasetStatus>;
 
 function formatRelativeDate(iso: string): string {
+    const toETDay = (d: Date) =>
+        d.toLocaleDateString("en-CA", { timeZone: "America/New_York" }); // "YYYY-MM-DD"
     const date = new Date(iso);
     const now = new Date();
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    const diffDays = Math.round(
+        (new Date(toETDay(now)).getTime() - new Date(toETDay(date)).getTime()) / (1000 * 60 * 60 * 24)
+    );
     if (diffDays === 0) return "Updated today";
     if (diffDays === 1) return "Updated yesterday";
     if (diffDays < 7) return `Updated ${diffDays} days ago`;
-    return `Updated ${date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
+    return `Updated ${date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "America/New_York" })}`;
 }
 
 function formatInfoDate(iso: string): string {
