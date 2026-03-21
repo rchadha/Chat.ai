@@ -432,6 +432,15 @@ const Conversation = () => {
                         ) : null}
                     </p>
                 )}
+
+                {/* Coverage indicator */}
+                <div className="flex items-center gap-2 mt-2 pl-1">
+                    <span className="text-[11px] text-muted-foreground">Coverage:</span>
+                    <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-600">
+                        NVDA
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">· Top S&amp;P 500 companies coming soon</span>
+                </div>
             </div>
 
             {/* Messages */}
