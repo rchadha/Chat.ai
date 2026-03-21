@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ArrowRight, BarChart2, BrainCircuit, DatabaseIcon, Scale } from "lucide-react";
+import { ArrowRight, BarChart2, BrainCircuit, DatabaseIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const tools = [
@@ -31,15 +31,6 @@ const tools = [
         color: "text-pink-500",
         bgColor: "bg-pink-500/10",
         href: "/image",
-        comingSoon: true,
-    },
-    {
-        label: "LexAI",
-        description: "AI-powered legal research and document assistant — filings, contracts, and more.",
-        icon: Scale,
-        color: "text-emerald-500",
-        bgColor: "bg-emerald-500/10",
-        href: "/lexai",
         comingSoon: true,
     },
 ]
