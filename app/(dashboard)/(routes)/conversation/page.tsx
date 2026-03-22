@@ -11,10 +11,10 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avator";
 
 const DATASETS = [
-    { label: "News", value: "news", icon: Newspaper },
-    { label: "Social Sentiment", value: "social", icon: Users },
     { label: "SEC Filings", value: "sec", icon: FileText },
     { label: "Earnings Calls", value: "earnings", icon: TrendingUp },
+    { label: "News", value: "news", icon: Newspaper },
+    { label: "Social Sentiment", value: "social", icon: Users },
 ] as const;
 
 type Dataset = typeof DATASETS[number]["value"];
