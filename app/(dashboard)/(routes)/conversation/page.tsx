@@ -74,7 +74,7 @@ const SUGGESTIONS: Record<Dataset, string[]> = {
         "What are the most discussed topics on investing forums this week?",
     ],
     sec: [
-        "What risk factors were highlighted in the latest 10-K?",
+        "What risk factors were highlighted in the latest Nvidia 10-K report?",
         "What did the company say about supply and capacity constraints?",
         "How did the company describe their core business strategy?",
     ],
