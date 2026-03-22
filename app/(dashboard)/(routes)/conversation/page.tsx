@@ -63,7 +63,7 @@ function formatInfoDateTime(iso: string): string {
 const SUGGESTIONS: Record<Dataset, string[]> = {
     news: [
         "What is the latest news about this company's business outlook?",
-        "What are analysts saying about the stock price target?",
+        "What are analysts saying about the stock price target for NVIDIA?",
         "What recent developments have impacted the company's valuation?",
     ],
     social: [
