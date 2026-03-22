@@ -79,7 +79,7 @@ const SUGGESTIONS: Record<Dataset, string[]> = {
         "How did the company describe their core business strategy?",
     ],
     earnings: [
-        "What were the key revenue highlights from the latest earnings call?",
+        "What were the key revenue highlights from the latest earnings call for NVIDIA?",
         "What guidance did management provide for the next quarter?",
         "What did NVIDIA's CEO say about demand and growth outlook?",
     ],
