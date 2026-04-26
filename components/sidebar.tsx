@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { BarChart2, BrainCircuit, DatabaseIcon, LayoutDashboard, MessageSquare, SettingsIcon, Zap } from "lucide-react";
+import { BarChart2, BrainCircuit, DatabaseIcon, LayoutDashboard, Scale, SettingsIcon, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ const routes = [
         icon: DatabaseIcon,
         href: '/sqlconversation',
         color: "text-orange-500",
-        comingSoon: true,
+        comingSoon: false,
     },
     {
         label: "LocalChat",
@@ -34,6 +34,14 @@ const routes = [
         href: '/image',
         color: "text-pink-500",
         comingSoon: true,
+        hidden: true,
+    },
+    {
+        label: "LexAI",
+        icon: Scale,
+        href: '/lexai',
+        color: "text-amber-500",
+        comingSoon: false,
     },
     {
         label: "Settings",
@@ -107,7 +115,7 @@ const UsageCounter = () => {
 const Sidebar = () => {
     const pathname = usePathname();
 
-    const mainRoutes = routes.filter(r => r.href !== '/settings');
+    const mainRoutes = routes.filter(r => r.href !== '/settings' && !r.hidden);
     const settingsRoute = routes.find(r => r.href === '/settings')!;
 
     return (

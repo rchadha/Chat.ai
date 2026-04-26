@@ -11,7 +11,7 @@ export const LandingHero = () => {
         <div className="text-white font-bold py-20 md:py-36 text-center space-y-5">
             <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl space-y-3 font-extrabold">
                 <p>Research smarter with</p>
-                <p className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400">
+                <div className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400">
                     <TypewriterComponent
                         options={{
                             strings: [
@@ -26,7 +26,7 @@ export const LandingHero = () => {
                             cursor: "|"
                         }}
                     />
-                </p>
+                </div>
             </div>
             <div className="text-sm md:text-xl font-light text-zinc-400">
                 AI-powered research across financial data, databases, and legal documents.

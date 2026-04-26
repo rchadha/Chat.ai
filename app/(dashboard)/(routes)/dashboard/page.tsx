@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ArrowRight, BarChart2, BrainCircuit, DatabaseIcon } from "lucide-react";
+import { ArrowRight, BarChart2, BrainCircuit, DatabaseIcon, Scale } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const tools = [
@@ -22,7 +22,7 @@ const tools = [
         color: "text-orange-500",
         bgColor: "bg-orange-500/10",
         href: "/sqlconversation",
-        comingSoon: true,
+        comingSoon: false,
     },
     {
         label: "LocalChat",
@@ -32,6 +32,16 @@ const tools = [
         bgColor: "bg-pink-500/10",
         href: "/image",
         comingSoon: true,
+        hidden: true,
+    },
+    {
+        label: "LexAI",
+        description: "AI assistant for legal research, contract analysis, and document workflows.",
+        icon: Scale,
+        color: "text-amber-500",
+        bgColor: "bg-amber-500/10",
+        href: "/lexai",
+        comingSoon: false,
     },
 ]
 
@@ -49,7 +59,7 @@ const DashboardPage = () => {
                 </p>
             </div>
             <div className="px-4 md:px-20 lg:px-32 space-y-4">
-                {tools.map((tool) => (
+                {tools.filter(t => !t.hidden).map((tool) => (
                     <Card
                         key={tool.href}
                         onClick={() => !tool.comingSoon && router.push(tool.href)}
